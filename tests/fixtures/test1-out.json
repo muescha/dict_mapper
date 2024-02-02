@@ -1,0 +1,19 @@
+{
+  "a_change": "changed to a",
+  "bcde_change": "changed to b",
+  "HTTP-Version": "1.1",
+  "http": {
+    "version": "1.1",
+    "status_code": "200",
+    "status_reason": "OK"
+  },
+  "status_code": "200",
+  "camel_case_case": "CAMELCASE",
+  "Status-Reason": "OK",
+  "replaced_key": "TEXT",
+  "some_numbers": "1343",
+  "item_matcher": "THIS IS THE TEXT",
+  "filesystem_created": "2024-02-02T12:00:00Z",
+  "last_mount_time": "2024-02-02T12:00:00Z",
+  "Status-Code": "200"
+}
