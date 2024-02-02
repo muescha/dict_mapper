@@ -47,20 +47,20 @@ class MyTests(unittest.TestCase):
         mapper_config = {
             'value_mapper': {
                 'SOME_NUMBERS': 'utils.convert_to_int',
+                '.+_change$': lambda x: 'changed to '+x.lower(),
                 '*': lambda x: x.upper(),
             },
             'key_mapper': {
                 'replace_this_key': 'replaced_key',
-                '.+_change$': lambda x: x.lower(),
                 '^Camel.+$': utils.camel_to_snake,
+                'version': 'HTTP-Version',
+                'status_code': 'Status-Code',
+                'status_reason': 'Status-Reason',
                 '*': [
-                    lambda x: x.upper(),
+                    lambda x: x.lower(),
                     lambda x: x.replace('-', '_'),
                     lambda x: x.replace(' ', '_')
                 ],
-                'version': 'HTTP-Version',
-                'status_code': 'Status-Code',
-                'status_reason': 'Status-Reason'
             },
             'item_mapper': {
                 'ITEM_MATCHER': item_mapper,
