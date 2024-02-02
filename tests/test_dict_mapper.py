@@ -24,7 +24,7 @@ class MyTests(unittest.TestCase):
     @staticmethod
     def test_utils_dict_mapper_dict():
         raw_output = {
-π            "A_change": "A",
+            "A_change": "A",
             "BCDE_change": "B",
             "version": "1.1",
             "http": "HTTP/1.1 200 OK",
