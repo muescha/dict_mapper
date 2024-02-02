@@ -4,10 +4,10 @@ import re
 import sys
 import time
 import unittest
+from pathlib import Path
 
 import dict_mapper.utils
 from dict_mapper import utils
-
 from dict_mapper.dict_mapper import dict_mapper
 
 # Set the timezone on POSIX systems. Need to manually set for Windows tests
@@ -16,29 +16,17 @@ if not sys.platform.startswith('win32'):
     time.tzset()
 
 
+def open_file(fixture_name):
+    base_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+    return open(base_dir.joinpath(f"./fixtures/{fixture_name}.json"), 'r', encoding='utf-8')
+
+
 class MyTests(unittest.TestCase):
 
     def xtest_utils_dict_mapper_empty_options(self):
         self.assertEqual(dict_mapper({'a': 'abcd'}, {}), {'a': 'abcd'})
 
-    @staticmethod
-    def test_utils_dict_mapper_dict():
-        raw_output = {
-            "A_change": "A",
-            "BCDE_change": "B",
-            "version": "1.1",
-            "http": "HTTP/1.1 200 OK",
-            "http-update": "HTTP/1.1 200 OK",
-            "Status-Code": "200",
-            "CamelCaseCase": "CamelCase",
-            "status_reason": "OK",
-            "replace_this_key": "text",
-            "some_numbers": "1343",
-            "item_matcher": "this is the text",
-            "Filesystem Created": "2024-02-02T12:00:00Z",
-            "Last Mount Time": "2024-02-02T12:00:00Z",
-        }
-
+    def test_utils_dict_mapper_dict(self):
         matcher = re.compile(r'^HTTP/(?P<version>\d+(\.\d+)?) (?P<status_code>\d+)(?: (?P<status_reason>.+))?$')
 
         def item_mapper(key, value):
@@ -47,7 +35,7 @@ class MyTests(unittest.TestCase):
         mapper_config = {
             'value_mapper': {
                 'SOME_NUMBERS': 'utils.convert_to_int',
-                '.+_change$': lambda x: 'changed to '+x.lower(),
+                '.+_change$': lambda x: 'changed to ' + x.lower(),
                 '*': lambda x: x.upper(),
             },
             'key_mapper': {
@@ -72,13 +60,16 @@ class MyTests(unittest.TestCase):
             },
         }
 
-        print()
-        print(json.dumps(raw_output, indent=4))
-        result = dict_mapper(raw_output, mapper_config)
-        print()
-        print(json.dumps(raw_output, indent=4))
-        print()
-        print(json.dumps(result, indent=4))
+        with open_file("test1-in") as in_file, \
+                open_file("test1-out") as out_file:
+            raw_output = json.load(in_file)
+            expected = json.load(out_file)
+            print()
+            print(json.dumps(raw_output, indent=4))
+            result = dict_mapper(raw_output, mapper_config)
+            print()
+            print(json.dumps(result, indent=4))
+            self.assertEqual(result, expected)
 
     @staticmethod
     def xtest_utils_dict_mapper_list_dict():
