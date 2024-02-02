@@ -1,3 +1,4 @@
+import copy
 import re
 from typing import Dict, Iterable, Any, Union, List, Callable
 
@@ -7,18 +8,19 @@ from typing import Dict, Iterable, Any, Union, List, Callable
 
 
 def dict_mapper(
-        data: Union[Dict, Iterable[Dict]],
+        data_input: Union[Dict, Iterable[Dict]],
         mapper_options: Dict[str, Union[str, Callable]]
 ) -> Union[Dict, Iterable[Dict]]:
     """
     Map data into a dict or an iterable of dicts
-    :param data:
+    :param data_input:
     :param mapper_options:
     :return:
     """
+    data = copy.deepcopy(data_input)
     if isinstance(data, Dict):
-        data = dict_mapper_covert(data, mapper_options)
-        return data
+        result = dict_mapper_covert(data, mapper_options)
+        return result
 
     elif isinstance(data, list):
         return [

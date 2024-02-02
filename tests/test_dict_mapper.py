@@ -72,6 +72,8 @@ class MyTests(unittest.TestCase):
             },
         }
 
+        print()
+        print(json.dumps(raw_output, indent=4))
         result = dict_mapper(raw_output, mapper_config)
         print()
         print(json.dumps(raw_output, indent=4))
