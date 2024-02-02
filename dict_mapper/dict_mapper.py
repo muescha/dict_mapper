@@ -17,8 +17,6 @@ def dict_mapper(
     :return:
     """
     if isinstance(data, Dict):
-        # return dict_mapper_covert(data, mapper_options)
-        # Apply key mapper
         data = dict_mapper_covert(data, mapper_options)
         return data
 
@@ -59,12 +57,7 @@ def dict_mapper_covert(data: Dict, mapper_options: Dict) -> Dict:
             if update:
                 data.update(update)
                 # if update.remove_key:
-                print("old_key '" + old_key + "', update = { " + str(update) + "}")
                 del data[old_key]
-
-    print("---------------")
-    print(data)
-    print("---------------")
 
     # Change Key = f(check(key), key = change(key))
     if 'key_mapper' in mapper_options:
@@ -83,8 +76,6 @@ def dict_mapper_covert(data: Dict, mapper_options: Dict) -> Dict:
 
 def apply_update_mapper(key: str, value: str, mapper_options: Dict[str, Union[str, Callable]]) -> Any:
     result = apply_mapper(key, value, mapper_options, lambda f, k, d: f(k, d))
-    print("apply_update_mapper")
-    print(result)
     if not result == value:
         return result
 
@@ -103,37 +94,27 @@ def apply_key_mapper(key: str, key_mapper: Dict[str, Union[str, List[Callable]]]
 
 def apply_mapper(key: str, value: Any, key_mapper: Dict[str, Union[str, List[Callable]]], wrap: Callable) -> str:
     for pattern, mapper in key_mapper.items():
-        print()
-        print("key:" + key + " pattern:" + str(pattern))
+
         if pattern == '*' or re.match(pattern, key):
             if isinstance(mapper, str):
-                print(key + ": " + str(value) + " := '" + mapper + "'")
                 return mapper
             elif isinstance(mapper, list):
                 result = value
                 for mapper_func in mapper:
                     result = wrap(mapper_func, key, result)
-                    print(key + ": " + value + " = []f():" + str(result))
-                print(key + ": " + value + " = [f()]:" + str(result))
                 return result
             elif isinstance(mapper, Callable):
                 result = wrap(mapper, key, value)
-                print(key + ": " + value + " = f():" + str(result))
                 return result
             elif isinstance(mapper, re.Pattern):
-                print("is regex")
                 if mapper.match(value):
-                    print("has a match")
-                    print(mapper.pattern)
-                    print(mapper.match(value).groupdict())
                     # TODO find out how to patch the data dict back :/
                     # RuntimeError: dictionary changed size during iteration
                     # `data.update(mapper.match(value).groupdict())`
                     # `return { "add": mapper.match(value).groupdict(), "remove_key": True }`
                     return mapper.match(value).groupdict()
                 else:
-                    print("has no match")
+                    pass
             else:
-                print(key + ": " + str(value) + " no change - mapper is not type of str/list[callable]/callable ")
                 return value
     return value
