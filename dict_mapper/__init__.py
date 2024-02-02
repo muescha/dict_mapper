@@ -11,4 +11,5 @@ https://github.com/muescha/dict_mapper
 """
 from . import (
     dict_mapper as dict_mapper,
+    utils as utils
 )

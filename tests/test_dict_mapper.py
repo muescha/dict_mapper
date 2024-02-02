@@ -5,6 +5,9 @@ import sys
 import time
 import unittest
 
+import dict_mapper.utils
+from dict_mapper import utils
+
 from dict_mapper.dict_mapper import dict_mapper
 
 # Set the timezone on POSIX systems. Need to manually set for Windows tests
@@ -27,6 +30,7 @@ class MyTests(unittest.TestCase):
             'http': "HTTP/1.1 200 OK",
             'http-update': "HTTP/1.1 200 OK",
             'Status-Code': '200',
+            'CamelCaseCase': 'CamelCase',
             'status_reason': 'OK',
             'replace_this_key': 'text',
             'some_numbers': '1343',
@@ -48,6 +52,7 @@ class MyTests(unittest.TestCase):
             'key_mapper': {
                 'replace_this_key': 'replaced_key',
                 '.+_change$': lambda x: x.lower(),
+                '^Camel.+$': utils.camel_to_snake,
                 '*': [
                     lambda x: x.upper(),
                     lambda x: x.replace('-', '_'),
@@ -100,6 +105,7 @@ class MyTests(unittest.TestCase):
             },
             'key_mapper': {
                 '*': [lambda x: x.upper(), lambda x: x.upper()],
+
             },
             'item_mapper': {
                 '*': matcher,
