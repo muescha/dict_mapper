@@ -24,19 +24,19 @@ class MyTests(unittest.TestCase):
     @staticmethod
     def test_utils_dict_mapper_dict():
         raw_output = {
-            'A_change': 'A',
-            'BCDE_change': 'B',
-            'version': '1.1',
-            'http': "HTTP/1.1 200 OK",
-            'http-update': "HTTP/1.1 200 OK",
-            'Status-Code': '200',
-            'CamelCaseCase': 'CamelCase',
-            'status_reason': 'OK',
-            'replace_this_key': 'text',
-            'some_numbers': '1343',
-            'item_matcher': 'this is the text',
-            'Filesystem Created': '2024-02-02T12:00:00Z',
-            'Last Mount Time': '2024-02-02T12:00:00Z',
+π            "A_change": "A",
+            "BCDE_change": "B",
+            "version": "1.1",
+            "http": "HTTP/1.1 200 OK",
+            "http-update": "HTTP/1.1 200 OK",
+            "Status-Code": "200",
+            "CamelCaseCase": "CamelCase",
+            "status_reason": "OK",
+            "replace_this_key": "text",
+            "some_numbers": "1343",
+            "item_matcher": "this is the text",
+            "Filesystem Created": "2024-02-02T12:00:00Z",
+            "Last Mount Time": "2024-02-02T12:00:00Z",
         }
 
         matcher = re.compile(r'^HTTP/(?P<version>\d+(\.\d+)?) (?P<status_code>\d+)(?: (?P<status_reason>.+))?$')
@@ -65,7 +65,7 @@ class MyTests(unittest.TestCase):
             'item_mapper': {
                 'ITEM_MATCHER': item_mapper,
                 # TODO '*:first_match': matcher
-                'HTTP': matcher,
+                'http': matcher,
             },
             'update_mapper': {
                 'http-update': matcher,
